@@ -118,6 +118,25 @@ Build the static Storybook site:
 bun run build-storybook
 ```
 
+### Auth UI
+
+The shared UI package includes early Clerk-like auth components:
+
+```tsx
+import "@repo/ui/styles.css";
+import { SignIn, SignUp, UserButton } from "@repo/ui/auth";
+```
+
+These components are UI-only. Wire their callbacks to your auth client or backend:
+
+```tsx
+<SignIn
+  onSubmit={async ({ email, password }) => {
+    await signIn({ email, password });
+  }}
+/>
+```
+
 ### Remote Caching
 
 > [!TIP]
