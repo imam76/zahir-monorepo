@@ -1,0 +1,9 @@
+{
+  "extends": "@repo/typescript-config/react-library.json",
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "types": ["node"]
+  },
+  "include": [".storybook", "stories", "../../packages/ui/src"],
+  "exclude": ["node_modules", "storybook-static"]
+}

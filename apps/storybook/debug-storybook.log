@@ -1,0 +1,10 @@
+[12:34:02.156] [INFO] storybook v10.4.0
+[12:34:02.244] [ERROR] [38;2;241;97;97mError: Invariant failed: expected options to have a port[39m
+    at invariant (file:///home/imam/Documents/development/turborepo/zahir/node_modules/.bun/storybook@10.4.0+84b95bc5af021828/node_modules/storybook/dist/_node-chunks/chunk-OHGHOIHA.js:20:11)
+    at buildDevStandalone (file:///home/imam/Documents/development/turborepo/zahir/node_modules/.bun/storybook@10.4.0+84b95bc5af021828/node_modules/storybook/dist/core-server/index.js:19385:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async withTelemetry (file:///home/imam/Documents/development/turborepo/zahir/node_modules/.bun/storybook@10.4.0+84b95bc5af021828/node_modules/storybook/dist/_node-chunks/chunk-OQIYQ5CW.js:655:12)
+    at async dev (file:///home/imam/Documents/development/turborepo/zahir/node_modules/.bun/storybook@10.4.0+84b95bc5af021828/node_modules/storybook/dist/bin/core.js:2736:3)
+    at async _Command.<anonymous> (file:///home/imam/Documents/development/turborepo/zahir/node_modules/.bun/storybook@10.4.0+84b95bc5af021828/node_modules/storybook/dist/bin/core.js:2806:92)
+[12:34:02.247] [WARN] Broken build, fix the error above.
+You may need to refresh the browser.

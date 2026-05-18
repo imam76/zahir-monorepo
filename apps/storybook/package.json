@@ -1,0 +1,29 @@
+{
+  "name": "ui-storybook",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@repo/ui": "*",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
+    "@storybook/react-vite": "^10.0.8",
+    "@types/node": "^22.15.3",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "eslint": "^9.39.1",
+    "storybook": "^10.0.8",
+    "typescript": "5.9.2",
+    "vite": "^7.2.7"
+  }
+}

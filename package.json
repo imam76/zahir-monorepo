@@ -4,6 +4,8 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "storybook": "turbo run storybook --filter=ui-storybook",
+    "build-storybook": "turbo run build-storybook --filter=ui-storybook",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types"
