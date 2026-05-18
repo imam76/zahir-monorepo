@@ -104,6 +104,20 @@ bun exec turbo dev --filter=web
 bun exec turbo dev --filter=web
 ```
 
+### Storybook
+
+Run Storybook for the shared `@repo/ui` package:
+
+```sh
+bun run storybook
+```
+
+Build the static Storybook site:
+
+```sh
+bun run build-storybook
+```
+
 ### Remote Caching
 
 > [!TIP]
