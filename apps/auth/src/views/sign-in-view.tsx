@@ -9,12 +9,20 @@ export function SignInView() {
 
   return (
     <SignIn
+      error={auth.error ?? undefined}
       isLoading={auth.isLoading}
-      onForgotPassword={() => undefined}
-      onSignUp={() => void navigate({ to: "/sign-up" })}
+      onForgotPassword={auth.clearError}
+      onSignUp={() => {
+        auth.clearError();
+        void navigate({ to: "/sign-up" });
+      }}
       onSubmit={async (values) => {
-        await auth.signIn(values);
-        await navigate({ to: "/account" });
+        try {
+          await auth.signIn(values);
+          await navigate({ to: "/account" });
+        } catch {
+          // Error state is owned by AuthProvider and rendered by SignIn.
+        }
       }}
       providers={authProviders}
     />

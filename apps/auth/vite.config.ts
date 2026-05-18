@@ -1,5 +1,5 @@
+import tanstackRouter from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
-import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import { defineConfig } from "vite";
 
 export default defineConfig({
@@ -32,7 +32,7 @@ export default defineConfig({
     target: "es2022",
   },
   plugins: [
-    TanStackRouterVite({
+    tanstackRouter({
       addExtensions: ".js",
       generatedRouteTree: "./src/routeTree.gen.ts",
       quoteStyle: "double",
