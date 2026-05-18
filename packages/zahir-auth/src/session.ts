@@ -1,5 +1,6 @@
 const DEFAULT_BASE_URL = "https://go.zahironline.com";
 const SESSION_PATH = "/api/v3/session";
+const USER_SESSIONS_PATH = "/api/v3/user_sessions";
 const SESSION_TOKEN_EXPIRES_IN_SECONDS = 30 * 60;
 
 export interface ZahirAuthKeys {
@@ -10,19 +11,55 @@ export interface ZahirAuthKeys {
 
 export interface GenerateZahirSessionTokenOptions {
   keys: ZahirAuthKeys;
+  password?: string;
+  username?: string;
+}
+
+export interface PostZahirSessionOptions {
+  acceptLanguage?: string;
+  baseUrl?: string;
+  keys: ZahirAuthKeys;
   password: string;
   username: string;
 }
 
-export interface PostZahirSessionOptions extends GenerateZahirSessionTokenOptions {
+export interface GetZahirUserSessionOptions {
   acceptLanguage?: string;
   baseUrl?: string;
+  id: string;
+  keys: ZahirAuthKeys;
 }
 
-interface ZahirSessionErrorResponse {
+export interface ZahirSessionResponse {
+  id?: string;
+  is_guest?: boolean;
+  is_local_token_only?: boolean;
   message?: unknown;
   meta?: {
     message?: unknown;
+  };
+  next?: string;
+  product_type?: string;
+  zahir_id?: {
+    email?: string;
+    first_name?: string;
+    id?: number;
+    last_name?: string;
+    mobile_number?: string;
+    telegram_username?: string;
+    whatsapp_number?: string;
+    client?: {
+      name?: string;
+      expires_in?: string | null;
+      internal_client?: boolean | null;
+      developer_account?: {
+        id?: number;
+        username?: string;
+        email?: string;
+        first_name?: string;
+        last_name?: string;
+      };
+    };
   };
 }
 
@@ -54,6 +91,55 @@ export async function postZahirSession({
     throw new Error(getZahirSessionErrorMessage(payload, response.status));
   }
 
+  return payload;
+}
+
+export async function getZahirUserSession({
+  acceptLanguage = "",
+  baseUrl = DEFAULT_BASE_URL,
+  id,
+  keys,
+}: GetZahirUserSessionOptions) {
+  const signedToken = await generateZahirSessionToken({ keys });
+  const response = await fetch(createUserSessionUrl(baseUrl, id), {
+    headers: {
+      Accept: "application/json",
+      "Accept-Language": acceptLanguage,
+      Authorization: `Bearer ${signedToken}`,
+      "Content-Type": "application/json",
+    },
+    method: "GET",
+  });
+  const payload = await readJsonResponse(response);
+
+  if (!response.ok) {
+    throw new Error(getZahirSessionErrorMessage(payload, response.status));
+  }
+
+  return payload;
+}
+
+export async function deleteZahirUserSession({
+  acceptLanguage = "",
+  baseUrl = DEFAULT_BASE_URL,
+  id,
+  keys,
+}: GetZahirUserSessionOptions) {
+  const signedToken = await generateZahirSessionToken({ keys });
+  const response = await fetch(createUserSessionUrl(baseUrl, id), {
+    headers: {
+      Accept: "application/json",
+      "Accept-Language": acceptLanguage,
+      Authorization: `Bearer ${signedToken}`,
+      "Content-Type": "application/json",
+    },
+    method: "DELETE",
+  });
+  const payload = await readJsonResponse(response);
+
+  if (!response.ok) {
+    throw new Error(getZahirSessionErrorMessage(payload, response.status));
+  }
 }
 
 export async function generateZahirSessionToken({
@@ -67,10 +153,14 @@ export async function generateZahirSessionToken({
     typ: "JWT",
   });
   const encodedBody = encodeBase64UrlJson({
-    aud: encodeBase64(`${username}:${password}`),
     exp: currentTimestamp + SESSION_TOKEN_EXPIRES_IN_SECONDS,
     iat: currentTimestamp - 60,
     iss: encodeBase64(`${keys.clientId}:${keys.clientSecret}`),
+    ...(username && password
+      ? {
+          aud: encodeBase64(`${username}:${password}`),
+        }
+      : {}),
   });
   const token = `${encodedHeader}.${encodedBody}`;
   const signature = await createHmacSha256Signature(token, keys.jwtSecret);
@@ -82,18 +172,20 @@ function createSessionUrl(baseUrl: string) {
   return new URL(SESSION_PATH, baseUrl).toString();
 }
 
-async function readJsonResponse(
-  response: Response,
-): Promise<ZahirSessionErrorResponse> {
+function createUserSessionUrl(baseUrl: string, id: string) {
+  return new URL(`${USER_SESSIONS_PATH}/${encodeURIComponent(id)}`, baseUrl).toString();
+}
+
+async function readJsonResponse(response: Response): Promise<ZahirSessionResponse> {
   try {
-    return (await response.json()) as ZahirSessionErrorResponse;
+    return (await response.json()) as ZahirSessionResponse;
   } catch {
     return {};
   }
 }
 
 function getZahirSessionErrorMessage(
-  payload: ZahirSessionErrorResponse,
+  payload: ZahirSessionResponse,
   status: number,
 ) {
   if (typeof payload.message === "string") {

@@ -1,13 +1,12 @@
-import type {
-  SignInValues,
-  UserButtonUser,
+import {
+  createBrowserSessionStorage,
+  createZahirAuthClient,
 } from "@repo/zahir-auth";
-import { postZahirSession } from "@repo/zahir-auth";
 
-export async function createZahirSignInSession(
-  values: SignInValues,
-): Promise<UserButtonUser> {
-  await postZahirSession({
+let zahirAuthClient: ReturnType<typeof createZahirAuthClient> | null = null;
+
+export function getZahirAuthClient() {
+  zahirAuthClient ??= createZahirAuthClient({
     acceptLanguage: getAcceptLanguage(),
     baseUrl: getApiBaseUrl(),
     keys: {
@@ -15,18 +14,10 @@ export async function createZahirSignInSession(
       clientSecret: getRequiredEnv("VITE_ZAHIR_CLIENT_SECRET"),
       jwtSecret: getRequiredEnv("VITE_ZAHIR_JWT_SECRET"),
     },
-    password: values.password,
-    username: values.email,
+    storage: createBrowserSessionStorage(),
   });
 
-  return {
-    email: values.email,
-    name: getAccountName(values.email),
-  };
-}
-
-function getAccountName(email: string) {
-  return email.split("@")[0] || "Account";
+  return zahirAuthClient;
 }
 
 function getApiBaseUrl() {

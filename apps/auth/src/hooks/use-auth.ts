@@ -1,12 +1,1 @@
-import { useContext } from "react";
-import { AuthContext } from "../lib/auth-context.js";
-
-export function useAuth() {
-  const auth = useContext(AuthContext);
-
-  if (!auth) {
-    throw new Error("useAuth must be used inside AuthProvider");
-  }
-
-  return auth;
-}
+export { useZahirAuth as useAuth } from "@repo/zahir-auth";
