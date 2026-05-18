@@ -1,133 +1,113 @@
-# Turborepo starter
+# Zahir
 
-This Turborepo starter is maintained by the Turborepo core team.
+Turborepo workspace untuk aplikasi Zahir. Repo ini memakai Bun sebagai package
+manager dan Turbo untuk menjalankan task lint, typecheck, build, dan dev server
+lintas package.
 
-## Using this example
+## Requirements
 
-Run the following command:
+- Bun `1.3.12` atau lebih baru
+- Node.js `>=18`
 
-```sh
-npx create-turbo@latest
-```
-
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+Install dependency dari root repo:
 
 ```sh
-cd my-turborepo
-turbo build
+bun install
 ```
 
-Without global `turbo`, use your package manager:
+## Apps And Packages
+
+- `auth`: Vite React app untuk auth flow.
+- `docs`: Next.js app.
+- `web`: Next.js app.
+- `ui-storybook`: Storybook untuk package UI.
+- `@repo/ui`: shared React component library.
+- `@repo/eslint-config`: shared ESLint config.
+- `@repo/typescript-config`: shared TypeScript config.
+
+## Commands
+
+Jalankan dari root repo.
 
 ```sh
-cd my-turborepo
-npx turbo build
-bun dlx turbo build
-bun exec turbo build
+bun run dev
+bun run build
+bun run lint
+bun run check-types
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+Jalankan app/package tertentu dengan Turbo filter:
 
 ```sh
-turbo build --filter=docs
+bun run dev --filter=auth
+bun run build --filter=auth
+bun run lint --filter=auth
+bun run check-types --filter=auth
 ```
 
-Without global `turbo`:
+Untuk memanggil binary Turbo langsung lewat Bun, gunakan:
 
 ```sh
-npx turbo build --filter=docs
-bun exec turbo build --filter=docs
-bun exec turbo build --filter=docs
+bun run turbo dev --filter=auth
 ```
 
-### Develop
+Catatan: di environment repo ini, `bun exec turbo ...` tidak me-resolve binary
+lokal Turbo dan bisa gagal dengan `bun: command not found: turbo`. Pakai
+`bun run turbo ...` atau script root seperti `bun run dev --filter=auth`.
 
-To develop all apps and packages, run the following command:
+## Auth App
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+Start dev server auth:
 
 ```sh
-cd my-turborepo
-turbo dev
+bun run dev --filter=auth
 ```
 
-Without global `turbo`, use your package manager:
+Default URL:
+
+```txt
+http://localhost:3002
+```
+
+Build auth app:
 
 ```sh
-cd my-turborepo
-npx turbo dev
-bun exec turbo dev
-bun exec turbo dev
+bun run build --filter=auth
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+Atau dari folder `apps/auth`:
 
 ```sh
-turbo dev --filter=web
+bun run dev
+bun run build
+bun run lint
+bun run check-types
 ```
 
-Without global `turbo`:
+## Storybook
 
-```sh
-npx turbo dev --filter=web
-bun exec turbo dev --filter=web
-bun exec turbo dev --filter=web
-```
-
-### Storybook
-
-Run Storybook for the shared `@repo/ui` package:
+Run Storybook untuk shared UI package:
 
 ```sh
 bun run storybook
 ```
 
-Build the static Storybook site:
+Build static Storybook:
 
 ```sh
 bun run build-storybook
 ```
 
-### Auth UI
+## Auth UI
 
-The shared UI package includes early Clerk-like auth components:
+Shared UI package menyediakan komponen auth UI-only:
 
 ```tsx
 import "@repo/ui/styles.css";
 import { SignIn, SignUp, UserButton } from "@repo/ui/auth";
 ```
 
-These components are UI-only. Wire their callbacks to your auth client or backend:
+Callback komponen perlu dihubungkan ke auth client atau backend:
 
 ```tsx
 <SignIn
@@ -137,56 +117,24 @@ These components are UI-only. Wire their callbacks to your auth client or backen
 />
 ```
 
-### Remote Caching
+## Turbo Notes
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+Turbo filter mengacu ke nama package di `package.json`, misalnya:
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+- `auth`
+- `web`
+- `docs`
+- `ui-storybook`
+- `@repo/ui`
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
+Contoh:
 
 ```sh
-cd my-turborepo
-npx turbo login
-bun exec turbo login
-bun exec turbo login
+bun run build --filter=@repo/ui
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+Useful links:
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-bun exec turbo link
-bun exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+- [Turborepo Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
+- [Turborepo Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
+- [Turborepo Caching](https://turborepo.com/docs/crafting-your-repository/caching)
