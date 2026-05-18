@@ -11,7 +11,7 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@repo/ui": "*",
+    "@repo/zahir-auth": "*",
     "@tanstack/react-router": "1.170.4",
     "@vitejs/plugin-react": "^5.1.2",
     "vite": "^7.2.7",

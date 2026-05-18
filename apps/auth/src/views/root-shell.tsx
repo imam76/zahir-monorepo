@@ -16,7 +16,6 @@ export function RootShell() {
             </p>
             <nav className="auth-nav" aria-label="Auth routes">
               <Link to="/">Sign in</Link>
-              <Link to="/sign-up">Sign up</Link>
               <Link to="/account">Account</Link>
             </nav>
           </aside>

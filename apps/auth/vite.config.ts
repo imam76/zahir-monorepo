@@ -21,6 +21,8 @@ export default defineConfig({
           }
 
           if (
+            id.includes("/node_modules/@repo/zahir-auth/") ||
+            id.includes("/packages/zahir-auth/") ||
             id.includes("/node_modules/@repo/ui/") ||
             id.includes("/packages/ui/")
           ) {

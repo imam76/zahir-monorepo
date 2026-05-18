@@ -1,13 +1,9 @@
 import { createContext, useMemo, useState, type ReactNode } from "react";
 import type {
   SignInValues,
-  SignUpValues,
   UserButtonUser,
-} from "@repo/ui/auth";
-import {
-  createUnsupportedSignUpSession,
-  createZahirSignInSession,
-} from "../services/zahir-session.js";
+} from "@repo/zahir-auth";
+import { createZahirSignInSession } from "../services/zahir-session.js";
 
 export interface AuthState {
   error: string | null;
@@ -15,7 +11,6 @@ export interface AuthState {
   user: UserButtonUser | null;
   clearError: () => void;
   signIn: (values: SignInValues) => Promise<void>;
-  signUp: (values: SignUpValues) => Promise<void>;
   signOut: () => void;
 }
 
@@ -40,20 +35,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         try {
           setUser(await createZahirSignInSession(values));
-        } catch (error) {
-          setError(getAuthErrorMessage(error));
-          throw error;
-        } finally {
-          setIsLoading(false);
-        }
-      },
-      async signUp(values) {
-        void values;
-        setIsLoading(true);
-        setError(null);
-
-        try {
-          setUser(await createUnsupportedSignUpSession());
         } catch (error) {
           setError(getAuthErrorMessage(error));
           throw error;

@@ -12,10 +12,6 @@ export function SignInView() {
       error={auth.error ?? undefined}
       isLoading={auth.isLoading}
       onForgotPassword={auth.clearError}
-      onSignUp={() => {
-        auth.clearError();
-        void navigate({ to: "/sign-up" });
-      }}
       onSubmit={async (values) => {
         try {
           await auth.signIn(values);

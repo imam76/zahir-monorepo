@@ -1,7 +1,7 @@
 import {
   AuthProviderIcon,
   type AuthProviderAction,
-} from "@repo/ui/auth";
+} from "@repo/zahir-auth";
 
 export const authProviders: AuthProviderAction[] = [
   {

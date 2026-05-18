@@ -14,7 +14,7 @@
       "name": "auth",
       "version": "0.1.0",
       "dependencies": {
-        "@repo/ui": "*",
+        "@repo/zahir-auth": "*",
         "@tanstack/react-router": "1.170.4",
         "@vitejs/plugin-react": "^5.1.2",
         "react": "^19.2.0",
@@ -130,6 +130,20 @@
         "@types/node": "^22.15.3",
         "@types/react": "19.2.2",
         "@types/react-dom": "19.2.2",
+        "eslint": "^9.39.1",
+        "typescript": "5.9.2",
+      },
+    },
+    "packages/zahir-auth": {
+      "name": "@repo/zahir-auth",
+      "version": "0.0.0",
+      "dependencies": {
+        "@repo/ui": "*",
+      },
+      "devDependencies": {
+        "@repo/eslint-config": "*",
+        "@repo/typescript-config": "*",
+        "@types/node": "^22.15.3",
         "eslint": "^9.39.1",
         "typescript": "5.9.2",
       },
@@ -513,6 +527,8 @@
     "@repo/typescript-config": ["@repo/typescript-config@workspace:packages/typescript-config"],
 
     "@repo/ui": ["@repo/ui@workspace:packages/ui"],
+
+    "@repo/zahir-auth": ["@repo/zahir-auth@workspace:packages/zahir-auth"],
 
     "@rolldown/pluginutils": ["@rolldown/pluginutils@1.0.0-rc.3", "", {}, "sha512-eybk3TjzzzV97Dlj5c+XrBFW57eTNhzod66y9HrBlzJ6NsCrWCp/2kaPS3K9wJmurBC0Tdw4yPjXKZqlznim3Q=="],
 
