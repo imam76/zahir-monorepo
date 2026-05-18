@@ -1,11 +1,15 @@
-import { useNavigate } from "@tanstack/react-router";
+import { useRouter } from "@tanstack/react-router";
 import { SignIn } from "@repo/zahir-auth";
 import { useAuth } from "../hooks/use-auth.js";
 import { authProviders } from "../lib/auth-providers.js";
 
-export function SignInView() {
+interface SignInViewProps {
+  redirectTo: string;
+}
+
+export function SignInView({ redirectTo }: SignInViewProps) {
   const auth = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   return (
     <SignIn
@@ -15,7 +19,8 @@ export function SignInView() {
       onSubmit={async (values) => {
         try {
           await auth.signIn(values);
-          await navigate({ to: "/account" });
+          await router.invalidate();
+          router.history.push(redirectTo);
         } catch {
           // Error state is owned by the auth package and rendered by SignIn.
         }

@@ -9,12 +9,12 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from "./routes/__root.js";
-import { Route as AccountRouteImport } from "./routes/account.js";
+import { Route as AuthRouteRouteImport } from "./routes/_auth/route.js";
 import { Route as IndexRouteImport } from "./routes/index.js";
+import { Route as AuthAccountRouteImport } from "./routes/_auth/account.js";
 
-const AccountRoute = AccountRouteImport.update({
-  id: "/account",
-  path: "/account",
+const AuthRouteRoute = AuthRouteRouteImport.update({
+  id: "/_auth",
   getParentRoute: () => rootRouteImport,
 } as any);
 const IndexRoute = IndexRouteImport.update({
@@ -22,40 +22,46 @@ const IndexRoute = IndexRouteImport.update({
   path: "/",
   getParentRoute: () => rootRouteImport,
 } as any);
+const AuthAccountRoute = AuthAccountRouteImport.update({
+  id: "/account",
+  path: "/account",
+  getParentRoute: () => AuthRouteRoute,
+} as any);
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute;
-  "/account": typeof AccountRoute;
+  "/account": typeof AuthAccountRoute;
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute;
-  "/account": typeof AccountRoute;
+  "/account": typeof AuthAccountRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
   "/": typeof IndexRoute;
-  "/account": typeof AccountRoute;
+  "/_auth": typeof AuthRouteRouteWithChildren;
+  "/_auth/account": typeof AuthAccountRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths: "/" | "/account";
   fileRoutesByTo: FileRoutesByTo;
   to: "/" | "/account";
-  id: "__root__" | "/" | "/account";
+  id: "__root__" | "/" | "/_auth" | "/_auth/account";
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
-  AccountRoute: typeof AccountRoute;
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren;
 }
 
 declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    "/account": {
-      id: "/account";
-      path: "/account";
-      fullPath: "/account";
-      preLoaderRoute: typeof AccountRouteImport;
+    "/_auth": {
+      id: "/_auth";
+      path: "";
+      fullPath: "/";
+      preLoaderRoute: typeof AuthRouteRouteImport;
       parentRoute: typeof rootRouteImport;
     };
     "/": {
@@ -65,12 +71,31 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof IndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
+    "/_auth/account": {
+      id: "/_auth/account";
+      path: "/account";
+      fullPath: "/account";
+      preLoaderRoute: typeof AuthAccountRouteImport;
+      parentRoute: typeof AuthRouteRoute;
+    };
   }
 }
 
+interface AuthRouteRouteChildren {
+  AuthAccountRoute: typeof AuthAccountRoute;
+}
+
+const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthAccountRoute: AuthAccountRoute,
+};
+
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
+  AuthRouteRouteChildren,
+);
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AccountRoute: AccountRoute,
+  AuthRouteRoute: AuthRouteRouteWithChildren,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
