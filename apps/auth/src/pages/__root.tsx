@@ -1,6 +1,15 @@
-import { Link, Outlet } from "@tanstack/react-router";
+import {
+  Link,
+  Outlet,
+  createRootRouteWithContext,
+} from "@tanstack/react-router";
+import type { RouterContext } from "../lib/router-context.js";
 
-export function RootShell() {
+export const Route = createRootRouteWithContext<RouterContext>()({
+  component: RootShell,
+});
+
+function RootShell() {
   return (
     <main className="auth-page">
       <section className="auth-shell">

@@ -38,7 +38,7 @@ export default defineConfig({
       addExtensions: ".js",
       generatedRouteTree: "./src/routeTree.gen.ts",
       quoteStyle: "double",
-      routesDirectory: "./src/routes",
+      routesDirectory: "./src/pages",
       semicolons: true,
       target: "react",
     }),
