@@ -11,12 +11,19 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.2.4",
     "@repo/zahir-auth": "*",
+    "@tailwindcss/vite": "^4.3.0",
     "@tanstack/react-router": "1.170.4",
     "@vitejs/plugin-react": "^5.1.2",
-    "vite": "^7.2.7",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.16.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "tailwind-merge": "^3.6.0",
+    "tailwindcss": "^4.3.0",
+    "vite": "^7.2.7"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",

@@ -1,4 +1,5 @@
 import {
+  Link,
   createFileRoute,
   redirect,
   useRouter,
@@ -31,20 +32,38 @@ function SignInRoute() {
   const router = useRouter();
 
   return (
-    <SignIn
-      error={auth.error ?? undefined}
-      isLoading={auth.isLoading}
-      onForgotPassword={auth.clearError}
-      onSubmit={async (values) => {
-        try {
-          await auth.signIn(values);
-          await router.invalidate();
-          router.history.push(search.redirect ?? "/account");
-        } catch {
-          // Error state is owned by the auth package and rendered by SignIn.
-        }
-      }}
-      providers={authProviders}
-    />
+    <main className="auth-page">
+      <section className="auth-shell">
+        <aside className="auth-copy">
+          <p className="auth-eyebrow">Zahir Auth</p>
+          <h1>Zahir session</h1>
+          <p>
+            Login memakai komponen auth dan session API Zahir. Session disimpan
+            sementara di tab browser dan divalidasi saat halaman dibuka ulang.
+          </p>
+          <nav className="auth-nav" aria-label="Auth routes">
+            <Link to="/">Sign in</Link>
+            <Link to="/account">CMS</Link>
+          </nav>
+        </aside>
+        <section className="auth-stage">
+          <SignIn
+            error={auth.error ?? undefined}
+            isLoading={auth.isLoading}
+            onForgotPassword={auth.clearError}
+            onSubmit={async (values) => {
+              try {
+                await auth.signIn(values);
+                await router.invalidate();
+                router.history.push(search.redirect ?? "/account");
+              } catch {
+                // Error state is owned by the auth package and rendered by SignIn.
+              }
+            }}
+            providers={authProviders}
+          />
+        </section>
+      </section>
+    </main>
   );
 }
